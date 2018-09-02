@@ -1,0 +1,226 @@
+		
+{% extends "base.html" %}
+
+{% block content %}
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    h1{
+        padding: 5vh;
+    }
+    h3{
+        display: inline-block;
+    }
+    p{
+        padding-left: 6vh;
+    }
+    .tag{
+        padding-left: 5vh;
+    }
+    </style>
+    </head>
+    <body>
+    <h1>   Website: {{url}} </h1>
+    <br>
+    <div>
+        <h3 class="tag"> Install Add-Ons   : </h3>
+            {% set perm = {'val': "Block"} %}
+            {% set text = {'val': "Does not allow websites to install add ons."} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "install" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Allows websites to install add ons without asking for permission each time."}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not allow websites to install add ons."}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3 class="tag"> Location   : </h3>
+            {% set perm = {'val': "Always Ask"} %}
+            {% set text = {'val': "When trying to determine your location, the browser will ask you to allow data transfer."} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "geo" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Lets a site (like Yandex.Maps) detect your location without asking for permission every time. "}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not allow the website to determine your location. "}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+</div>
+    </div>
+    <div>
+        <h3 class="tag"> Set Cookies   : </h3>
+            {% set perm = {'val': "Allow"} %}
+            {% set text = {'val': "Cookies can be saved."} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "cookie" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Cookies can be saved."}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                        {% do text.update({'val' : "Allows cookies to be saved for one session. Cookies will be deleted once the browser window is closed. "}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Block a website from collecting information about you (such as username, password or browsing data). Blocking cookies can prevent the website from working correctly. "}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3  class="tag"> Share Screen   : </h3>
+            {% set perm = {'val': "Always Ask"} %}
+            {% set text = {'val': "Allows capturing screens, windows or applications (all the windows of an application) as a MediaStream, which can be shown locally, recorded, or shared over WebRTC. "} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "screen" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not allow capturing screens, windows or applications (all the windows of an application) as a MediaStream, which can be shown locally, recorded, or shared over WebRTC."}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3  class="tag"> Load Images   : </h3>
+            {% set perm = {'val': "Allow"} %}
+            {% set text = {'val': "Allows a website to be loaded with all its image content."} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "image" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Allows a website to be loaded with all its image content."}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not allow website to show images. It will load faster without images. "}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3 class="tag"> Maintain Offline Storage   : </h3>
+            {% set perm = {'val': "Always Ask"} %}
+            {% set text = {'val': "Lets the website ask for permission before automatically download multiple files each time. "} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "indexedDB" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Lets the website automatically download multiple files without asking for permission each time."}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not let a website automatically download files."}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3 class="tag"> Open Pop Up Windows   : </h3>
+            {% set perm = {'val': "Block"} %}
+            {% set text = {'val': "The website will not be allowed to show pop-up windows."} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "popup" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "The website will be allowed to show pop-up windows."}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3 class="tag"> Recieve Notifications   : </h3>
+            {% set perm = {'val': "Always Ask"} %}
+            {% set text = {'val': "Ask for permission every time before showing notifications."} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "desktop-notification" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Ask for permission every time before showing notifications. "}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not allow the website to show notifications. "}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3 class="tag"> Use Camera   : </h3>
+            {% set perm = {'val': "Always Ask"} %}
+            {% set text = {'val': "Lets the website ask for permission before accessing camera every time required."} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "camera" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Lets the website automatically access your camera. For an HTTP website, this setting will remain for the duration of your session, while HTTPS websites will be able to access your camera during future sessions as well."}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not allow the website to access your camera. "}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+    <div>
+        <h3 class="tag"> Use Microphone   : </h3>
+            {% set perm = {'val': "Always Ask"} %}
+            {% set text = {'val': "Lets the website ask for permission before accessing user's microphone every time required. "} %}
+            {% if rows|length > 0 %}
+                {% for row in rows if row["type"] == "microphone" %}
+                    {% if row["permission"] == 1 %}
+                        {% do perm.update({'val' : "Allow"}) %}
+                        {% do text.update({'val' : "Lets the website automatically access your microphone. For an HTTP website, this setting will remain for the duration of your session, while HTTPS websites will be able to access your microphone during future sessions as well."}) %}
+                    {% elif row["permission"] == 8 %}
+                        {% do perm.update({'val' : "Allow For Session"}) %}
+                    {% else %}
+                        {% do perm.update({'val' : "Block"}) %}
+                        {% do text.update({'val' : "Does not allow the website to access your microphone."}) %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        <h3> {{ perm.val }} </h3>
+        <p> {{text.val}} </p>
+    </div>
+</body>
+{% endblock %}
